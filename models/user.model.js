@@ -2,21 +2,21 @@ const mongoose = require('mongoose');
 const Register = new mongoose.Schema({
     mobile: {
         type: String,
-       /* required: true,*/
+       required: true,
         unique: true
     },
     email: {
         type: String,
-       /* required: true*/
+       required: true
     },
     password: {
         type: String,
-      /*  required: true,*/
+      required: true
 
     },
      name: {
          type: String,
-       /*  reuired:true*/
+        reuired:true
     },
     contacts: {
         type: Array,
