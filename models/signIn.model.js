@@ -3,7 +3,8 @@ const signIn = mongoose.Schema({
     mobile: {
         type: number,
         required: true,
-        length:10
+        length: 10,
+        unique:true
     },
     password: {
         type: String,
@@ -11,9 +12,9 @@ const signIn = mongoose.Schema({
 
     }
 },
-    { collection: 'user-data' }
+    {collection: ""}
 )
 
-const signInModel = mongoose.model("SignIn", signIn);
-module.export = signInModel;
+const signInModel = mongoose.model("signInModel", signIn);
+
 
