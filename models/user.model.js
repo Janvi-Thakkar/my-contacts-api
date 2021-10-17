@@ -1,4 +1,20 @@
 const mongoose = require('mongoose');
+
+var contact = new mongoose.Schema({
+    name: { type: String, required: true },
+    mobile: {
+        type: String,
+        required: true,
+        unique: true
+    },
+    email: {
+        type: String,
+        required: true
+    },
+    
+    
+    
+});
 const Register = new mongoose.Schema({
     mobile: {
         type: String,
@@ -11,24 +27,21 @@ const Register = new mongoose.Schema({
     },
     password: {
         type: String,
-      required: true
+       required: true
 
     },
      name: {
          type: String,
         reuired:true
     },
-    contacts: {
-        type: Array,
-        default: [{
-            Name: "Janvi Thakkar",
-            Email: "janvithakkar.583@gmail.com",
-            Mobile:"8320996025"
-        }]
-    }
+    contacts: [contact]
+    
+       
+        
+    },
 
                                             
-},
+
     { collection: 'UserData' }
 )
 
