@@ -5,7 +5,7 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 const user = require('./user.model.js')
 const bcrypt = require('bcryptjs');
-const port = process.env.PORT || 1300;
+const port = process.env.PORT || 1400;
 const connection_url = "mongodb+srv://janvi_1103:ldce%402023@cluster0.n6oya.mongodb.net/test";
 
 // TO AVOID CORS POLICY ERRORS
