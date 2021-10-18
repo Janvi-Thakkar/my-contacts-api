@@ -5,27 +5,30 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 const user = require('../server/models/user.model.js')
 const bcrypt = require('bcryptjs');
+const port = process.env.PORT || 1300;
+const connection_url = "mongodb+srv://janvi_1103:ldce%402023@cluster0.n6oya.mongodb.net/test";
 
 // TO AVOID CORS POLICY ERRORS
 app.use(cors());
 app.use(express.json())
 
 //TO LISTEN THE PORT
-app.listen(1300);
+app.listen(port);
+mongoose.connect(connection_url, {
+    dbName: "my-contacts"
+});
 
-mongoose.connect("mongodb://localhost:27017/my-contacts")
 
 app.post('/api/signin',async (req, res) => {
-
+      let signInUser=""
     if (req.body.password != null && req.body.password != "" && req.body.mobile.length == 10) {
-        const signInUser = await user.findOne({
+        signInUser = await user.findOne({
             mobile: req.body.mobile,
         })
 
-      
-     
-        let isPassvalid = await bcrypt.compare(req.body.password, signInUser.password);
-       
+        if (signInUser) {
+            let isPassvalid = await bcrypt.compare(req.body.password, signInUser.password);
+        }
             if (signInUser && isPassvalid) {
                 res.status(200).send({ status: "ok", code: 200, result: signInUser });
 
