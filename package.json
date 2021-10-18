@@ -5,9 +5,9 @@
   "main": "Server.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-       "start": "node Server.js",
+        "start": "node Server.js",
         "prod": "node Server.js",
-        "build": "node Server.js"
+        "build": "ng build"
     },
   "engines": {
     "node": "14.x"
