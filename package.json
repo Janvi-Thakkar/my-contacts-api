@@ -2,15 +2,16 @@
   "name": "server",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
-    "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1",
-        "dev": "nodemon Server.js",
-        "start": "nodemon Server.js",
-        "heroku-prebuild": "npm install -f",
-        "heroku-postbuild": "npm run prod",
-        "prod": "nodemon Server.js"
-    },
+  "main": "Server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon Server.js",
+    "start": "nodemon Server.js",
+    "prod": "nodemon Server.js"
+  },
+  "engines": {
+    "node": "14.x"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Janvi-Thakkar/my-contacts-api.git"
