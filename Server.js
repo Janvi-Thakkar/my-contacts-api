@@ -4,7 +4,7 @@ const app = express();
 const cors = require('cors');
 const mongoose = require('mongoose');
 const user = require('../server/models/user.model.js')
-/*const signInModel = require('../server/models/signIn.model')*/
+const bcrypt = require('bcryptjs');
 
 // TO AVOID CORS POLICY ERRORS
 app.use(cors());
@@ -20,15 +20,20 @@ app.post('/api/signin',async (req, res) => {
     if (req.body.password != null && req.body.password != "" && req.body.mobile.length == 10) {
         const signInUser = await user.findOne({
             mobile: req.body.mobile,
-            password: req.body.password
         })
-        if (signInUser != null) {
-            res.status(200).send({ status: "ok", code: 200 ,result:signInUser});
-           
-        }
-        else {
-            res.status(401).send({ error: 'Mobile number or password is incorrect', code: 401 });
-        }
+
+      
+     
+        let isPassvalid = await bcrypt.compare(req.body.password, signInUser.password);
+       
+            if (signInUser && isPassvalid) {
+                res.status(200).send({ status: "ok", code: 200, result: signInUser });
+
+            }
+            else {
+                res.status(401).send({ error: 'Mobile number or password is incorrect', code: 401 });
+            }
+       
         
     }
    
@@ -54,20 +59,27 @@ app.post('/api/register', async (req, res) => {
   
     try {
         if (req.body.password != null && req.body.password != "" && req.body.mobile.length == 10 && req.body.name != null && req.body.name != "" && req.body.email != null && req.body.email != "") {
+            let pass = await bcrypt.hash(req.body.password, 10);
             const RegisterUser = await user.create({
                 'mobile': req.body.mobile,
                 'name': req.body.name,
                 'email': req.body.email,
-                'password': req.body.password
+                'password': pass,
+                "contacts": [{
+                    "mobile": "1112223334",
+                    "email": "xyz@gmail.com",
+                    "name":"Janvi Thakkar"
+                }
+                ]
             })
-            res.status(200).send({ status: "ok", code: 200, result: signInUser});
+            res.status(200).send({ status: "ok", code: 200, result: RegisterUser});
         }
         else {
             res.status(401).send({ status: "error", code: 401, error: "user already exist" });
         }
     }
     catch (error) {
-        if (req.body.mobile.length != 10) {
+       if (req.body.mobile.length != 10) {
             res.status(402).send({ status: error, code: 403, error: "Mobile Number should be of 10 digit" });
         }
         else if (req.body.password == null || req.body.password == "" || req.body.mobile.length != 10 || req.body.name == null || req.body.name == "" || req.body.email == null || req.body.email == "") {
@@ -113,7 +125,6 @@ app.patch('/api/editUser', async (req, res, next) => {
         res.status(401).json({ status: "error", code: 401, error: error });
     })
 
-    console.log(req.data)
 })
 
 app.patch('/api/editContact', async (req, res, next) => {
@@ -122,7 +133,6 @@ app.patch('/api/editContact', async (req, res, next) => {
     }).catch(error => {
         res.status(401).json({ status: "error", code: 401, error: error });
     })
-    console.log(req.data)
 })
 
 app.patch('/api/delContact', async (req, res) => {

@@ -1,11 +1,13 @@
 const mongoose = require('mongoose');
 
 var contact = new mongoose.Schema({
-    name: { type: String, required: true },
+    name: {
+        type: String,
+        required: true
+    },
     mobile: {
         type: String,
-        required: true,
-        unique: true
+        required: true
     },
     email: {
         type: String,
