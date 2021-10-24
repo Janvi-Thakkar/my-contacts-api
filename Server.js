@@ -11,7 +11,7 @@ const connection_url = "mongodb+srv://janvi_1103:ldce%402023@cluster0.n6oya.mong
 // TO AVOID CORS POLICY ERRORS
 app.use(cors());
 app.use((req, res, next) => {
-    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Origin", "*");
     res.header(
         "Access-Control-Allow-Headers",
         "Origin, X-Requested-With, Content-Type, Accept"
