@@ -5,7 +5,7 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 const user = require('./user.model.js')
 const bcrypt = require('bcryptjs');
-const port = process.env.PORT;
+const port = process.env.PORT||3100;
 const connection_url = "mongodb+srv://janvi_1103:ldce%402023@cluster0.n6oya.mongodb.net/test";
 
 // TO AVOID CORS POLICY ERRORS
@@ -29,16 +29,16 @@ mongoose.connect(connection_url, {
 
 
 app.post('/api/signin',async (req, res) => {
-      let signInUser=""
+      let signInUser="",isPassvalid=""
     if (req.body.password != null && req.body.password != "" && req.body.mobile.length == 10) {
         signInUser = await user.findOne({
             mobile: req.body.mobile,
         })
 
         if (signInUser) {
-            let isPassvalid = await bcrypt.compare(req.body.password, signInUser.password);
+            isPassvalid = await bcrypt.compare(req.body.password, signInUser.password);
         }
-            if (signInUser && isPassvalid) {
+                if (signInUser && isPassvalid) {
                 res.status(200).send({ status: "ok", code: 200, result: signInUser });
 
             }
@@ -119,13 +119,19 @@ app.patch('/api/addContact', async (req, res) => {
 
 })
 
-app.get('/api/user', async (req, res,next) => {
-    user.find({ 'mobile': req.headers.authorization }).then(result=>{
-        res.status(200).json({ status: "ok", code: 200, result: result });
-       
-    }).catch (error=> {
-        res.status(401).json({ status: "error", code: 401, error: error });
-    })
+app.get('/api/user', async (req, res, next) => {
+    if (req.headers.authorization.length == 10) {
+        user.find({ 'mobile': req.headers.authorization }).then(result => {
+            if (result.length > 0)
+                res.status(200).json({ status: "ok", code: 200, result: result });
+
+        }).catch(error => {
+            res.status(401).json({ status: "error", code: 401, error: error });
+        })
+    }
+    else {
+        res.status(401).json({ status: "error", code: 401, error: "user not found" });
+    }
      
 })
 
