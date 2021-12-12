@@ -87,11 +87,22 @@ app.post('/api/register', async (req, res) => {
             res.status(200).send({ status: "ok", code: 200, result: RegisterUser});
         }
         else {
-            res.status(401).send({ status: "error", code: 401, error: "user already exist" });
+            console.log(req)
+            if (req.body.mobile.length != 10) {
+                res.status(402).send({ status: error, code: 403, error: "Mobile Number should be of 10 digit" });
+            }
+            else if (req.body.password == null || req.body.password == "" || req.body.mobile.length != 10 || req.body.name == null || req.body.name == "" || req.body.email == null || req.body.email == "") {
+                res.status(403).send({ status: error, code: 402, error: "All fields are madatory" });
+            }
+            else {
+                res.status(401).send({ status: error, code: 401, error: "user already exist" });
+            }
         }
     }
     catch (error) {
-       if (req.body.mobile.length != 10) {
+       
+        if (req.body.mobile.length != 10) {
+
             res.status(402).send({ status: error, code: 403, error: "Mobile Number should be of 10 digit" });
         }
         else if (req.body.password == null || req.body.password == "" || req.body.mobile.length != 10 || req.body.name == null || req.body.name == "" || req.body.email == null || req.body.email == "") {
