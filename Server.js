@@ -87,7 +87,6 @@ app.post('/api/register', async (req, res) => {
             res.status(200).send({ status: "ok", code: 200, result: RegisterUser});
         }
         else {
-            console.log(req)
             if (req.body.mobile.length != 10) {
                 res.status(402).send({ status: error, code: 403, error: "Mobile Number should be of 10 digit" });
             }
